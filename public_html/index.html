@@ -30,27 +30,62 @@ and open the template in the editor.
         </div>
         
         <script>
+            
             function f1(elemento){
-                var contenedor = document.createElement("div");
-                var carro = document.getElementById("carrito");
                 
-                var pc = document.getElementById(elemento.id);
-                var imagen = new Image();
-                imagen.src = pc.getElementsByTagName("img")[0].src;
-                imagen.width = pc.getElementsByTagName("img")[0].width;
-                imagen.height = pc.getElementsByTagName("img")[0].height;
-                contenedor.appendChild(imagen);
-                carro.appendChild(contenedor);
-                contenedor.style.float = "left";
-                //contenedor.style.border = "1px solid";
-                
-                var precio = pc.getElementsByTagName("p")[0];
-                var p2 = precio.childNodes[0].nodeValue;
-                var precios = p2.split(" ");
-                var precio2 = document.createElement("p");
-                var t = document.createTextNode(precios[1]);
-                precio2.appendChild(t);
-                carro.appendChild(precio2);
+                if(!document.getElementById("div"+elemento.id)){
+                    var contenedor = document.createElement("div");
+                    contenedor.id = "div"+elemento.id;
+                    var pc = document.getElementById(elemento.id);
+                    var imagen = new Image();
+                    imagen.src = pc.getElementsByTagName("img")[0].src;
+                    imagen.width = pc.getElementsByTagName("img")[0].width;
+                    imagen.heigth = pc.getElementsByTagName("img")[0].heigth;
+                    contenedor.appendChild(imagen);
+
+                    var precio = pc.getElementsByTagName("p")[0].firstChild.nodeValue;
+                    var precios = precio.split(" ");
+                    var parrafoPrecio = document.createElement("p");
+                    var t = document.createTextNode("Precio: "+precios[1]);
+                    parrafoPrecio.appendChild(t);
+                    contenedor.appendChild(parrafoPrecio);
+
+                    var parrafoUds = document.createElement("p");
+                    parrafoUds.id = "uds"+elemento.id;
+                    var unidades = document.createTextNode("Unidades: 1");
+                    parrafoUds.appendChild(unidades);
+                    contenedor.appendChild(parrafoUds);
+
+                    var parrafoTotal = document.createElement("p");
+                    parrafoTotal.id = "cant"+elemento.id;
+                    var total = document.createTextNode("Total: "+precios[1]);
+                    parrafoTotal.appendChild(total);
+                    contenedor.appendChild(parrafoTotal);
+                    
+                    var carro = document.getElementById("carrito");
+                    carro.appendChild(contenedor);
+                    contenedor.style.border = "1px solid";
+                    contenedor.style.float = "left";
+                }else{
+                    
+                    var pUds = document.getElementById("uds"+elemento.id).firstChild.nodeValue;
+                    var uds = pUds.split(" ");
+                    var totalUds = parseInt(uds[1])+1;
+                    document.getElementById("uds"+elemento.id).firstChild.nodeValue = "Unidades: "+totalUds;
+                    
+                    var cantidad = document.getElementById("cant"+elemento.id).firstChild.nodeValue;
+                    var cants = cantidad.split(" ");
+                    var cant1 = cants[1];
+                    var cantidades = cant1.split("€");
+                    
+                    var precioPC = document.getElementById(elemento.id).lastChild.nodeValue;
+                    var preciosPC = precioPC.split(" ");
+                    var precio1PC = preciosPC[1];
+                    var precios1PC = precio1PC.split("€");
+                    
+                    var totalCant = parseInt(cantidades[0])+parseInt(precios1PC[0]);
+                    document.getElementById("cant"+elemento.id).firstChild.nodeValue = "Total: "+totalCant+"€";
+                }
             }
         </script>
     </body>
