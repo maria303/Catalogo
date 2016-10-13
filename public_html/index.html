@@ -31,7 +31,7 @@ and open the template in the editor.
         </div>
         
         <script>
-            var bttn;
+            var precios, total, precios1PC;
             
             function f1(elemento){
                 
@@ -42,11 +42,11 @@ and open the template in the editor.
                     var imagen = new Image();
                     imagen.src = pc.getElementsByTagName("img")[0].src;
                     imagen.width = pc.getElementsByTagName("img")[0].width;
-                    imagen.heigth = pc.getElementsByTagName("img")[0].heigth;
+                    imagen.heigth = pc.getElementsByTagName("img")[0].height;
                     contenedor.appendChild(imagen);
 
                     var precio = pc.getElementsByTagName("p")[0].firstChild.nodeValue;
-                    var precios = precio.split(" ");
+                    precios = precio.split(" ");
                     var parrafoPrecio = document.createElement("p");
                     var t = document.createTextNode("Precio: "+precios[1]);
                     parrafoPrecio.appendChild(t);
@@ -60,14 +60,23 @@ and open the template in the editor.
 
                     var parrafoTotal = document.createElement("p");
                     parrafoTotal.id = "cant"+elemento.id;
-                    var total = document.createTextNode("Total: "+precios[1]);
+                    total = document.createTextNode("Total: "+precios[1]);
                     parrafoTotal.appendChild(total);
                     contenedor.appendChild(parrafoTotal);
                     
-                    bttn = document.createElement("button");
+                    var bttn = document.createElement("button");
+                    bttn.id = elemento.id;
+                    bttn.onclick = function(){quitar(this)};
                     var txt = document.createTextNode("Quitar 1");
                     bttn.appendChild(txt);
                     contenedor.appendChild(bttn);
+                    
+                    var bttnBorrarTodo = document.createElement("button");
+                    bttnBorrarTodo.id = elemento.id;
+                    bttnBorrarTodo.onclick = function(){quitarTodo(this)};
+                    var txt = document.createTextNode("Quitar todo");
+                    bttnBorrarTodo.appendChild(txt);
+                    contenedor.appendChild(bttnBorrarTodo);
                     
                     var carro = document.getElementById("carrito");
                     carro.appendChild(contenedor);
@@ -88,7 +97,7 @@ and open the template in the editor.
                     var precioPC = document.getElementById(elemento.id).getElementsByTagName("p")[0].firstChild.nodeValue;;
                     var preciosPC = precioPC.split(" ");
                     var precio1PC = preciosPC[1];
-                    var precios1PC = precio1PC.split("€");
+                    precios1PC = precio1PC.split("€");
                     
                     var totalCant = parseInt(cantidades[0])+parseInt(precios1PC[0]);
                     document.getElementById("cant"+elemento.id).firstChild.nodeValue = "Total: "+totalCant+"€";
@@ -96,10 +105,38 @@ and open the template in the editor.
             }
             
             function vaciarCarro(){
-                document.getElementById("carrito").innerHTML = "";
+                var elemento = document.getElementById("carrito");
+                while(elemento.firstChild){
+                    elemento.removeChild(elemento.firstChild);
+                }
             }
             
-            function quitar(){
+            function quitar(elemento){
+                var uds = document.getElementById("uds"+elemento.id).firstChild.nodeValue;
+                var cant = document.getElementById("cant"+elemento.id).firstChild.nodeValue;
+                
+                var unidades = uds.split(" ");
+                var cantidades = cant.split(" ");
+                var cantidades2 = cantidades[1];
+                var cantidades3 = cantidades2.split("€");
+                
+                if(unidades[1] != 1){
+                    uds = unidades[1] - 1;
+                    cant = cantidades3[0] - precios1PC[0];
+                    
+                    document.getElementById("uds"+elemento.id).firstChild.nodeValue = "Unidades: "+uds;
+                    document.getElementById("cant"+elemento.id).firstChild.nodeValue = "Total: "+cant+"€";
+                }else if(unidades[1] == 1){
+                    var contenedorPadre = document.getElementById("carrito");
+                    var contenedor = document.getElementById("div"+elemento.id);
+                    contenedorPadre.removeChild(contenedor);
+                }
+            }
+            
+            function quitarTodo(elemento){
+                var contenedorPadre = document.getElementById("carrito");
+                var contenedor = document.getElementById("div"+elemento.id);
+                contenedorPadre.removeChild(contenedor);
             }
         </script>
     </body>
