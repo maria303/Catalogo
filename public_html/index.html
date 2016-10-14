@@ -36,6 +36,16 @@ and open the template in the editor.
             function f1(elemento){
                 
                 if(!document.getElementById("div"+elemento.id)){
+                    var carro = document.getElementById("carrito");
+                    
+                    if(!document.getElementById("totalCarrito")){
+                        var totalCarrito = document.createElement("h1");
+                        totalCarrito.id = "totalCarrito";
+                        var txtTotalCarrito = document.createTextNode("Total carrito: 0€");
+                        totalCarrito.appendChild(txtTotalCarrito);
+                        carro.appendChild(totalCarrito);
+                    }
+                    
                     var contenedor = document.createElement("div");
                     contenedor.id = "div"+elemento.id;
                     var pc = document.getElementById(elemento.id);
@@ -44,22 +54,20 @@ and open the template in the editor.
                     imagen.width = pc.getElementsByTagName("img")[0].width;
                     imagen.heigth = pc.getElementsByTagName("img")[0].height;
                     contenedor.appendChild(imagen);
-
                     var precio = pc.getElementsByTagName("p")[0].firstChild.nodeValue;
                     precios = precio.split(" ");
                     var parrafoPrecio = document.createElement("p");
+                    parrafoPrecio.id = "precio"+elemento.id;
                     var t = document.createTextNode("Precio: "+precios[1]);
                     parrafoPrecio.appendChild(t);
                     contenedor.appendChild(parrafoPrecio);
-
                     var parrafoUds = document.createElement("p");
                     parrafoUds.id = "uds"+elemento.id;
                     var unidades = document.createTextNode("Unidades: 1");
                     parrafoUds.appendChild(unidades);
                     contenedor.appendChild(parrafoUds);
-
                     var parrafoTotal = document.createElement("p");
-                    parrafoTotal.id = "cant"+elemento.id;
+                    parrafoTotal.id = "total"+elemento.id;
                     total = document.createTextNode("Total: "+precios[1]);
                     parrafoTotal.appendChild(total);
                     contenedor.appendChild(parrafoTotal);
@@ -67,21 +75,22 @@ and open the template in the editor.
                     var bttn = document.createElement("button");
                     bttn.id = elemento.id;
                     bttn.onclick = function(){quitar(this)};
-                    var txt = document.createTextNode("Quitar 1");
+                    var txt = document.createTextNode("Borrar");
                     bttn.appendChild(txt);
                     contenedor.appendChild(bttn);
                     
                     var bttnBorrarTodo = document.createElement("button");
                     bttnBorrarTodo.id = elemento.id;
                     bttnBorrarTodo.onclick = function(){quitarTodo(this)};
-                    var txt = document.createTextNode("Quitar todo");
+                    var txt = document.createTextNode("Borrar todo");
                     bttnBorrarTodo.appendChild(txt);
                     contenedor.appendChild(bttnBorrarTodo);
                     
-                    var carro = document.getElementById("carrito");
                     carro.appendChild(contenedor);
                     contenedor.style.border = "1px solid";
                     contenedor.style.float = "left";
+                    
+                    SumarTotalCarrito(elemento.id);
                 }else{
                     
                     var pUds = document.getElementById("uds"+elemento.id).firstChild.nodeValue;
@@ -89,7 +98,7 @@ and open the template in the editor.
                     var totalUds = parseInt(uds[1])+1;
                     document.getElementById("uds"+elemento.id).firstChild.nodeValue = "Unidades: "+totalUds;
                     
-                    var cantidad = document.getElementById("cant"+elemento.id).firstChild.nodeValue;
+                    var cantidad = document.getElementById("total"+elemento.id).firstChild.nodeValue;
                     var cants = cantidad.split(" ");
                     var cant1 = cants[1];
                     var cantidades = cant1.split("€");
@@ -100,7 +109,9 @@ and open the template in the editor.
                     precios1PC = precio1PC.split("€");
                     
                     var totalCant = parseInt(cantidades[0])+parseInt(precios1PC[0]);
-                    document.getElementById("cant"+elemento.id).firstChild.nodeValue = "Total: "+totalCant+"€";
+                    document.getElementById("total"+elemento.id).firstChild.nodeValue = "Total: "+totalCant+"€";
+                    
+                    SumarTotalCarrito(elemento.id);
                 }
             }
             
@@ -113,30 +124,85 @@ and open the template in the editor.
             
             function quitar(elemento){
                 var uds = document.getElementById("uds"+elemento.id).firstChild.nodeValue;
-                var cant = document.getElementById("cant"+elemento.id).firstChild.nodeValue;
+                var total = document.getElementById("total"+elemento.id).firstChild.nodeValue;
+                var precio = document.getElementById("precio"+elemento.id).firstChild.nodeValue;
                 
                 var unidades = uds.split(" ");
-                var cantidades = cant.split(" ");
+                
+                var cantidades = total.split(" ");
                 var cantidades2 = cantidades[1];
                 var cantidades3 = cantidades2.split("€");
                 
+                var precios = precio.split(" ");
+                var precios2 = precios[1];
+                var precios3 = precios2.split("€");
+                
                 if(unidades[1] != 1){
                     uds = unidades[1] - 1;
-                    cant = cantidades3[0] - precios1PC[0];
+                    total = cantidades3[0] - precios3[0];
                     
                     document.getElementById("uds"+elemento.id).firstChild.nodeValue = "Unidades: "+uds;
-                    document.getElementById("cant"+elemento.id).firstChild.nodeValue = "Total: "+cant+"€";
+                    document.getElementById("total"+elemento.id).firstChild.nodeValue = "Total: "+total+"€";
+                    
+                    RestarTotalCarrito(elemento.id);
+                    
                 }else if(unidades[1] == 1){
+                    
+                    RestarTotalCarrito(elemento.id);
+                    
                     var contenedorPadre = document.getElementById("carrito");
                     var contenedor = document.getElementById("div"+elemento.id);
                     contenedorPadre.removeChild(contenedor);
                 }
+                
+                
             }
             
             function quitarTodo(elemento){
+                
+                RestarTotalCarrito(elemento.id);
+                
                 var contenedorPadre = document.getElementById("carrito");
                 var contenedor = document.getElementById("div"+elemento.id);
                 contenedorPadre.removeChild(contenedor);
+            }
+            
+            function SumarTotalCarrito(elemento){
+                var totalCarro = document.getElementById("totalCarrito").firstChild.nodeValue;
+                    totalCarro = totalCarro.split(": ");
+                    totalCarro = totalCarro[1];
+                    totalCarro = totalCarro.split("€");
+                    totalCarro = totalCarro[0];
+                    var precio1 = document.getElementById("precio"+elemento).firstChild.nodeValue;
+                    precio1 = precio1.split(" ");
+                    precio1 = precio1[1];
+                    precio1 = precio1.split("€");
+                    precio1 = precio1[0];
+                    totalCarro = parseInt(totalCarro);
+                    precio1 = parseInt(precio1);
+                    
+                    totalCarro = totalCarro+precio1;
+                    
+                    document.getElementById("totalCarrito").firstChild.nodeValue = "Total carrito: "+totalCarro+"€";
+            }
+            
+            function RestarTotalCarrito(elemento){
+                var totalCarro = document.getElementById("totalCarrito").firstChild.nodeValue;
+                    totalCarro = totalCarro.split(": ");
+                    totalCarro = totalCarro[1];
+                    totalCarro = totalCarro.split("€");
+                    totalCarro = totalCarro[0];
+                    var precio1 = document.getElementById("total"+elemento).firstChild.nodeValue;
+                    precio1 = precio1.split(" ");
+                    precio1 = precio1[1];
+                    precio1 = precio1.split("€");
+                    precio1 = precio1[0];
+                    totalCarro = parseInt(totalCarro);
+                    precio1 = parseInt(precio1);
+                    
+                    totalCarro = totalCarro-precio1;
+                    
+                    document.getElementById("totalCarrito").firstChild.nodeValue = "Total carrito: "+totalCarro+"€";
             }
         </script>
     </body>
