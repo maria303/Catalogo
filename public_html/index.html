@@ -31,7 +31,6 @@ and open the template in the editor.
         </div>
         
         <script>
-            var precios, total, precios1PC;
             
             function f1(elemento){
                 
@@ -55,7 +54,7 @@ and open the template in the editor.
                     imagen.heigth = pc.getElementsByTagName("img")[0].height;
                     contenedor.appendChild(imagen);
                     var precio = pc.getElementsByTagName("p")[0].firstChild.nodeValue;
-                    precios = precio.split(" ");
+                    var precios = precio.split(" ");
                     var parrafoPrecio = document.createElement("p");
                     parrafoPrecio.id = "precio"+elemento.id;
                     var t = document.createTextNode("Precio: "+precios[1]);
@@ -68,7 +67,7 @@ and open the template in the editor.
                     contenedor.appendChild(parrafoUds);
                     var parrafoTotal = document.createElement("p");
                     parrafoTotal.id = "total"+elemento.id;
-                    total = document.createTextNode("Total: "+precios[1]);
+                    var total = document.createTextNode("Total: "+precios[1]);
                     parrafoTotal.appendChild(total);
                     contenedor.appendChild(parrafoTotal);
                     
@@ -106,7 +105,7 @@ and open the template in the editor.
                     var precioPC = document.getElementById(elemento.id).getElementsByTagName("p")[0].firstChild.nodeValue;;
                     var preciosPC = precioPC.split(" ");
                     var precio1PC = preciosPC[1];
-                    precios1PC = precio1PC.split("€");
+                    var precios1PC = precio1PC.split("€");
                     
                     var totalCant = parseInt(cantidades[0])+parseInt(precios1PC[0]);
                     document.getElementById("total"+elemento.id).firstChild.nodeValue = "Total: "+totalCant+"€";
@@ -144,11 +143,11 @@ and open the template in the editor.
                     document.getElementById("uds"+elemento.id).firstChild.nodeValue = "Unidades: "+uds;
                     document.getElementById("total"+elemento.id).firstChild.nodeValue = "Total: "+total+"€";
                     
-                    RestarTotalCarrito(elemento.id);
+                    RestarTotalCarrito("precio"+elemento.id);
                     
                 }else if(unidades[1] == 1){
                     
-                    RestarTotalCarrito(elemento.id);
+                    RestarTotalCarrito("precio"+elemento.id);
                     
                     var contenedorPadre = document.getElementById("carrito");
                     var contenedor = document.getElementById("div"+elemento.id);
@@ -160,7 +159,7 @@ and open the template in the editor.
             
             function quitarTodo(elemento){
                 
-                RestarTotalCarrito(elemento.id);
+                RestarTotalCarrito("total"+elemento.id);
                 
                 var contenedorPadre = document.getElementById("carrito");
                 var contenedor = document.getElementById("div"+elemento.id);
@@ -192,7 +191,7 @@ and open the template in the editor.
                     totalCarro = totalCarro[1];
                     totalCarro = totalCarro.split("€");
                     totalCarro = totalCarro[0];
-                    var precio1 = document.getElementById("total"+elemento).firstChild.nodeValue;
+                    var precio1 = document.getElementById(elemento).firstChild.nodeValue;
                     precio1 = precio1.split(" ");
                     precio1 = precio1[1];
                     precio1 = precio1.split("€");
