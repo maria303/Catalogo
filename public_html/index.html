@@ -13,7 +13,7 @@ and open the template in the editor.
     </head>
     <body>
         <div id="main" class="main">
-            <input type="button" value="Vaciar carrito" style="float: left;" onclick="vaciarCarro()"/><br><br>
+            <input type="button" value="Vaciar carrito" class="boton" onclick="vaciarCarro()"/><br><br>
             <div id="hp15" onclick="f1(this)" class="producto">
                 <img src="http://multimedia.fnac.com/multimedia/ES/images_produits/ES/Zoom_Planche_BD/8/9/7/0888182133798_1.jpg" width="200" height="200"/>
                 <p>Precio: 500€</p>
@@ -45,11 +45,13 @@ and open the template in the editor.
                     contenedor.id = "div"+elemento.id;
                     contenedor.class = "producto";
                     var pc = document.getElementById(elemento.id);
+                    
                     var imagen = new Image();
                     imagen.src = pc.getElementsByTagName("img")[0].src;
                     imagen.width = 150;
                     imagen.heigth = 150;
                     contenedor.appendChild(imagen);
+                    
                     var precio = pc.getElementsByTagName("p")[0].firstChild.nodeValue;
                     var precios = precio.split(" ");
                     var parrafoPrecio = document.createElement("p");
@@ -57,11 +59,13 @@ and open the template in the editor.
                     var t = document.createTextNode("Precio: "+precios[1]);
                     parrafoPrecio.appendChild(t);
                     contenedor.appendChild(parrafoPrecio);
+                    
                     var parrafoUds = document.createElement("p");
                     parrafoUds.id = "uds"+elemento.id;
                     var unidades = document.createTextNode("Unidades: 1");
                     parrafoUds.appendChild(unidades);
                     contenedor.appendChild(parrafoUds);
+                    
                     var parrafoTotal = document.createElement("p");
                     parrafoTotal.id = "total"+elemento.id;
                     var total = document.createTextNode("Total: "+precios[1]);
@@ -70,7 +74,8 @@ and open the template in the editor.
                     
                     var bttn = document.createElement("button");
                     bttn.id = elemento.id;
-                    bttn.class = "boton";
+                    bttn.style.margin = "5px";
+                    bttn.style.borderRadius = "4px";
                     bttn.onclick = function(){quitar(this)};
                     var txt = document.createTextNode("Borrar");
                     bttn.appendChild(txt);
@@ -78,7 +83,7 @@ and open the template in the editor.
                     
                     var bttnBorrarTodo = document.createElement("button");
                     bttnBorrarTodo.id = elemento.id;
-                    bttnBorrarTodo.class = "boton";
+                    bttnBorrarTodo.style.borderRadius = "4px";
                     bttnBorrarTodo.onclick = function(){quitarTodo(this)};
                     var txt = document.createTextNode("Borrar todo");
                     bttnBorrarTodo.appendChild(txt);
