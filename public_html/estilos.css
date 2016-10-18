@@ -31,3 +31,18 @@ and open the template in the editor.
 .boton{
     border-radius: 4px;
 }
+
+.botonVaciarCarro{
+    border-radius: 4px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+p{
+    text-align: center;
+}
+
+.totalCarrito{
+    margin-left: 10px;
+    margin-bottom: -10px;
+}
