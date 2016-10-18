@@ -13,7 +13,7 @@ and open the template in the editor.
     </head>
     <body>
         <div id="main" class="main">
-            <input type="button" value="Vaciar carrito" class="boton" onclick="vaciarCarro()"/><br><br>
+            <input type="button" value="Vaciar carrito" class="botonVaciarCarro" onclick="vaciarCarro()"/><br><br>
             <div id="hp15" onclick="f1(this)" class="producto">
                 <img src="http://multimedia.fnac.com/multimedia/ES/images_produits/ES/Zoom_Planche_BD/8/9/7/0888182133798_1.jpg" width="200" height="200"/>
                 <p>Precio: 500€</p>
@@ -28,7 +28,7 @@ and open the template in the editor.
             </div>
         </div>
         <div id="total">
-            <h1 id="totalCarrito">Total Carrito: 0€</h1>
+            <h1 id="totalCarrito" class="totalCarrito">Total Carrito: 0€</h1>
         </div>
         <div id="carrito" class="carrito">
             
@@ -103,16 +103,16 @@ and open the template in the editor.
                     document.getElementById("uds"+elemento.id).firstChild.nodeValue = "Unidades: "+totalUds;
                     
                     var cantidad = document.getElementById("total"+elemento.id).firstChild.nodeValue;
-                    var cants = cantidad.split(" ");
-                    var cant1 = cants[1];
-                    var cantidades = cant1.split("€");
+                    var cantidad = cantidad.split(" ");
+                    var cantidad = cantidad[1];
+                    var cantidad = cantidad.split("€");
                     
                     var precioPC = document.getElementById(elemento.id).getElementsByTagName("p")[0].firstChild.nodeValue;;
-                    var preciosPC = precioPC.split(" ");
-                    var precio1PC = preciosPC[1];
-                    var precios1PC = precio1PC.split("€");
+                    var precioPC = precioPC.split(" ");
+                    var precioPC = precioPC[1];
+                    var precioPC = precioPC.split("€");
                     
-                    var totalCant = parseInt(cantidades[0])+parseInt(precios1PC[0]);
+                    var totalCant = parseInt(cantidad[0])+parseInt(precioPC[0]);
                     document.getElementById("total"+elemento.id).firstChild.nodeValue = "Total: "+totalCant+"€";
                     
                     SumarTotalCarrito(elemento.id);
@@ -136,16 +136,16 @@ and open the template in the editor.
                 var unidades = uds.split(" ");
                 
                 var cantidades = total.split(" ");
-                var cantidades2 = cantidades[1];
-                var cantidades3 = cantidades2.split("€");
+                var cantidades = cantidades[1];
+                var cantidades = cantidades.split("€");
                 
                 var precios = precio.split(" ");
-                var precios2 = precios[1];
-                var precios3 = precios2.split("€");
+                var precios = precios[1];
+                var precios = precios.split("€");
                 
                 if(unidades[1] != 1){
                     uds = unidades[1] - 1;
-                    total = cantidades3[0] - precios3[0];
+                    total = cantidades[0] - precios[0];
                     
                     document.getElementById("uds"+elemento.id).firstChild.nodeValue = "Unidades: "+uds;
                     document.getElementById("total"+elemento.id).firstChild.nodeValue = "Total: "+total+"€";
@@ -178,6 +178,7 @@ and open the template in the editor.
                     totalCarro = totalCarro[1];
                     totalCarro = totalCarro.split("€");
                     totalCarro = totalCarro[0];
+                    
                     var precio1 = document.getElementById("precio"+elemento).firstChild.nodeValue;
                     precio1 = precio1.split(" ");
                     precio1 = precio1[1];
@@ -197,6 +198,7 @@ and open the template in the editor.
                     totalCarro = totalCarro[1];
                     totalCarro = totalCarro.split("€");
                     totalCarro = totalCarro[0];
+                    
                     var precio1 = document.getElementById(elemento).firstChild.nodeValue;
                     precio1 = precio1.split(" ");
                     precio1 = precio1[1];
